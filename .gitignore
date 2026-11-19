@@ -1,0 +1,16 @@
+# Binarios y archivos que no van al repositorio
+*.apk
+*.aab
+*.xlsx
+.env
+.env.*
+!.env.example
+
+# Configuración local de la app (URL de la API en la red local y llave de Maps)
+app/config/dev.json
+app/android/local.properties
+
+# Configuración local de Claude Code
+.claude/settings.local.json
+app/config/*.json
+!app/config/example.json

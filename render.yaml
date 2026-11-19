@@ -1,0 +1,42 @@
+# Despliegue de la API de NetJob en Render (plan gratuito).
+# En Render: New → Blueprint → elige este repositorio. Los valores marcados con
+# `sync: false` los pide Render al crear el servicio (vienen de Supabase).
+services:
+  - type: web
+    name: netjob-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm ci --include=dev && npx prisma generate
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Supabase → Project Settings → Database → Connection string
+      # DATABASE_URL: "Transaction pooler" (puerto 6543) + ?pgbouncer=true&connection_limit=1
+      - key: DATABASE_URL
+        sync: false
+      # DIRECT_URL: "Session pooler" (puerto 5432)
+      - key: DIRECT_URL
+        sync: false
+      # Supabase → Project Settings → API → Project URL y la llave service_role (secreta)
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      # URL pública del servicio en Render (cámbiala si Render asigna otro nombre)
+      - key: PUBLIC_URL
+        value: https://netjob-api.onrender.com
+      - key: PAYMENT_REDIRECT_URL
+        value: https://netjob-api.onrender.com/payments/return
+      # Proyecto académico sin comercio en Wompi: pagos simulados
+      - key: PAYMENTS_MOCK
+        value: "true"
+      - key: REQUIRE_VERIFICATION
+        value: "true"
+      - key: SUPPORT_WHATSAPP
+        value: "573027402932"

@@ -1,0 +1,56 @@
+{
+  "name": "netjob-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "API de NetJob: marketplace de servicios independientes",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "db:dev": "tsx scripts/dev-db.ts",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "demo:near": "tsx scripts/demo-near.ts",
+    "demo:seed-near": "tsx scripts/seed-near.ts",
+    "demo:reviews": "tsx scripts/demo-reviews.ts",
+    "demo:photos": "tsx scripts/fetch-demo-photos.ts",
+    "demo:pros": "tsx scripts/seed-pros.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test --test-concurrency=1 tests/*.test.ts",
+    "supabase:push": "dotenv -e .env.supabase -o -- prisma db push",
+    "supabase:seed": "dotenv -e .env.supabase -o -- tsx prisma/seed.ts && dotenv -e .env.supabase -o -- tsx scripts/seed-pros.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.12.1",
+    "multer": "^2.5.0",
+    "socket.io": "^4.8.4",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^26.6.6",
+    "@types/supertest": "^7.2.1",
+    "dotenv-cli": "^8.0.0",
+    "embedded-postgres": "^18.6.0-beta.19",
+    "prisma": "^6.19.3",
+    "supertest": "^7.3.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

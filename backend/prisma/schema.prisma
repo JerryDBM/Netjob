@@ -1,0 +1,523 @@
+// NetJob – modelo de datos centralizado (PostgreSQL)
+// Montos en pesos colombianos (COP) como enteros, sin decimales.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  /// Conexión directa (sin pooler) para `prisma db push`. En local puede ser la misma URL.
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  CLIENT
+  PROFESSIONAL
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum PriceUnit {
+  FIXED // precio fijo por servicio
+  HOUR // por hora
+  VISIT // por visita / diagnóstico
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentKind {
+  DIAGNOSTIC // póliza de visita y diagnóstico (valor fijo)
+  SERVICE // valor final cotizado tras el diagnóstico + comisión NetJob
+  SUBSCRIPTION
+  PROMOTION // perfil destacado pagado por el profesional
+}
+
+/// Dinero del profesional dentro de un pago: retenido hasta que ambos confirman el fin del servicio.
+enum PayoutStatus {
+  NONE // no aplica (suscripciones)
+  HELD // retenido por NetJob
+  RELEASED // liberado al profesional
+  REFUNDED // devuelto al cliente tras una reclamación
+}
+
+/// Verificación de identidad y antecedentes del profesional (documentos + revisión del admin).
+enum VerificationStatus {
+  NONE
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ClaimType {
+  QUALITY // trabajo mal hecho o incompleto
+  NO_SHOW // no llegó o no cumplió la cita
+  EXTRA_CHARGE // cobros no pactados
+  BEHAVIOR // conducta inapropiada
+  DAMAGE // daños en el domicilio (caso para la aseguradora)
+  WARRANTY // falla dentro del periodo de garantía
+  PAYMENT // problema con un pago o cancelación de un servicio pagado
+  OTHER
+}
+
+enum ClaimStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+/// Decisión del administrador al cerrar una reclamación.
+enum ClaimAction {
+  NONE
+  REFUND_CLIENT // se devuelve al cliente el dinero retenido
+  RELEASE_PRO // se libera el dinero al profesional
+  WARRANTY_VISIT // el profesional debe volver sin costo
+  INSURANCE // se remite a la aseguradora aliada
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  DECLINED
+  VOIDED
+  ERROR
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  EXPIRED
+  CANCELLED
+}
+
+model User {
+  id                String     @id @default(cuid())
+  email             String     @unique
+  passwordHash      String
+  name              String
+  phone             String?
+  role              Role       @default(CLIENT)
+  status            UserStatus @default(ACTIVE)
+  avatarUrl         String?
+  department        String?
+  city              String? // municipio
+  resetTokenHash    String?
+  resetTokenExpires DateTime?
+  /// Suspensión temporal (null = indefinida mientras status = SUSPENDED)
+  suspendedUntil    DateTime?
+  suspensionReason  String?
+  /// Calificaciones bajas: entra en revisión del administrador (clientes y profesionales)
+  underReview       Boolean    @default(false)
+  reviewNote        String?
+  /// Referidos y fidelización
+  referralCode      String?    @unique
+  referredById      String?
+  referredBy        User?      @relation("Referrals", fields: [referredById], references: [id])
+  referrals         User[]     @relation("Referrals")
+  referralRewarded  Boolean    @default(false)
+  /// Servicios con tarifa NetJob reducida (1 %) disponibles para el cliente
+  commissionCredits Int        @default(0)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  professional          ProfessionalProfile?
+  requestsAsClient      ServiceRequest[]       @relation("ClientRequests")
+  messages              Message[]
+  payments              Payment[]
+  reviewsWritten        Review[]               @relation("ReviewAuthor")
+  /// Calificación del usuario como cliente (la dan los profesionales)
+  clientRatingAvg       Float                  @default(0)
+  clientRatingCount     Int                    @default(0)
+  clientReviewsReceived ClientReview[]         @relation("ClientReviewed")
+  clientReviewsWritten  ClientReview[]         @relation("ClientReviewAuthor")
+  notifications         Notification[]
+  statusChanges         RequestStatusHistory[]
+  claimsOpened          Claim[]                @relation("ClaimOpener")
+  claimsAgainst         Claim[]                @relation("ClaimAgainst")
+}
+
+model ProfessionalProfile {
+  id                      String             @id @default(cuid())
+  userId                  String             @unique
+  user                    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  headline                String?
+  bio                     String?
+  yearsExperience         Int                @default(0)
+  city                    String?
+  coverageArea            String? // barrios / zona de cobertura en texto libre
+  lat                     Float?
+  lng                     Float?
+  coverageRadiusKm        Int                @default(10)
+  /// Costo de la visita de diagnóstico que fija el profesional (0 = gratis; máximo configurable, 35.000 por defecto)
+  diagnosticFee           Int                @default(8000)
+  isAvailable             Boolean            @default(true) // interruptor manual "disponible ahora"
+  verified                Boolean            @default(false)
+  ratingAvg               Float              @default(0)
+  ratingCount             Int                @default(0)
+  featuredUntil           DateTime?
+  /// Potenciador de recomendación (premio por buen desempeño o referidos)
+  boostUntil              DateTime?
+  /// Verificación de identidad y antecedentes
+  verificationStatus      VerificationStatus @default(NONE)
+  verificationNote        String?
+  idFrontFile             String?
+  idBackFile              String?
+  selfieFile              String?
+  backgroundCheckFile     String?
+  verificationSubmittedAt DateTime?
+  verificationReviewedAt  DateTime?
+  /// Capacitación inicial obligatoria
+  rulesAcceptedAt         DateTime?
+  trainingPassedAt        DateTime?
+  trainingScore           Int?
+  trainingAttempts        Int                @default(0)
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+
+  views         ProfileView[]
+  categories    Category[]
+  services      Service[]
+  portfolio     PortfolioItem[]
+  availability  AvailabilitySlot[]
+  requests      ServiceRequest[]
+  reviews       Review[]
+  subscriptions Subscription[]
+  blocks        CalendarBlock[]
+}
+
+model Category {
+  id            String                @id @default(cuid())
+  name          String                @unique
+  slug          String                @unique
+  icon          String? // nombre de ícono Material
+  active        Boolean               @default(true)
+  sortOrder     Int                   @default(0)
+  services      Service[]
+  professionals ProfessionalProfile[]
+}
+
+model Service {
+  id             String              @id @default(cuid())
+  professionalId String
+  professional   ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  categoryId     String
+  category       Category            @relation(fields: [categoryId], references: [id])
+  title          String
+  description    String
+  price          Int
+  priceUnit      PriceUnit           @default(FIXED)
+  conditions     String?
+  coverageArea   String?
+  photos         String[]            @default([])
+  active         Boolean             @default(true)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  requests       ServiceRequest[]
+
+  @@index([categoryId])
+  @@index([professionalId])
+}
+
+model PortfolioItem {
+  id             String              @id @default(cuid())
+  professionalId String
+  professional   ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  imageUrl       String
+  createdAt      DateTime            @default(now())
+}
+
+/// Franja semanal de disponibilidad. dayOfWeek: 0 = domingo … 6 = sábado. Horas "HH:mm".
+model AvailabilitySlot {
+  id             String              @id @default(cuid())
+  professionalId String
+  professional   ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  dayOfWeek      Int
+  startTime      String
+  endTime        String
+}
+
+model ServiceRequest {
+  id                 String              @id @default(cuid())
+  clientId           String
+  client             User                @relation("ClientRequests", fields: [clientId], references: [id])
+  professionalId     String
+  professional       ProfessionalProfile @relation(fields: [professionalId], references: [id])
+  serviceId          String
+  service            Service             @relation(fields: [serviceId], references: [id])
+  description        String
+  address            String
+  lat                Float?
+  lng                Float?
+  scheduledAt        DateTime
+  additionalInfo     String?
+  photos             String[]            @default([])
+  status             RequestStatus       @default(PENDING)
+  /// Póliza de visita y diagnóstico vigente al crear la solicitud.
+  diagnosticFee      Int                 @default(8000)
+  /// Valor final del servicio (sin comisión). Lo cotiza el profesional después del diagnóstico.
+  agreedPrice        Int?
+  /// Detalle de la cotización: hallazgos, materiales, alcance.
+  quoteNote          String?
+  quotedAt           DateTime?
+  cancelReason       String?
+  /// Fin del servicio confirmado por cada parte; con las dos se finaliza y se libera el dinero.
+  clientConfirmedAt  DateTime?
+  proConfirmedAt     DateTime?
+  /// Garantía de la mano de obra: hasta cuándo el cliente puede reclamar tras finalizar
+  warrantyUntil      DateTime?
+  /// Trayecto del profesional: solo se comparte la ubicación mientras va en camino
+  enRouteAt          DateTime?
+  arrivedAt          DateTime?
+  proLat             Float?
+  proLng             Float?
+  proLocationAt      DateTime?
+  /// Recordatorios de la cita ya enviados (un día antes y una hora antes)
+  reminderDaySentAt  DateTime?
+  reminderHourSentAt DateTime?
+  /// Propuesta de reprogramación pendiente: una parte propone y la otra acepta o rechaza
+  rescheduleAt       DateTime?
+  rescheduleById     String?
+  rescheduleNote     String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  history      RequestStatusHistory[]
+  messages     Message[]
+  payments     Payment[]
+  review       Review?
+  clientReview ClientReview?
+  claims       Claim[]
+  notes        AppointmentNote[]
+
+  @@index([clientId])
+  @@index([professionalId, status])
+  @@index([scheduledAt])
+}
+
+model RequestStatusHistory {
+  id          String         @id @default(cuid())
+  requestId   String
+  request     ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  fromStatus  RequestStatus?
+  toStatus    RequestStatus
+  changedById String
+  changedBy   User           @relation(fields: [changedById], references: [id])
+  note        String?
+  createdAt   DateTime       @default(now())
+}
+
+model Message {
+  id        String         @id @default(cuid())
+  requestId String
+  request   ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  senderId  String
+  sender    User           @relation(fields: [senderId], references: [id])
+  content   String
+  readAt    DateTime?
+  createdAt DateTime       @default(now())
+
+  @@index([requestId, createdAt])
+}
+
+/// Transacción en la pasarela (Wompi). Sin escrow: el registro solo refleja lo que reporta la pasarela.
+model Payment {
+  id                   String          @id @default(cuid())
+  kind                 PaymentKind
+  reference            String          @unique
+  payerId              String
+  payer                User            @relation(fields: [payerId], references: [id])
+  requestId            String?
+  request              ServiceRequest? @relation(fields: [requestId], references: [id])
+  subscriptionId       String?
+  subscription         Subscription?   @relation(fields: [subscriptionId], references: [id])
+  serviceAmount        Int // valor base (servicio o plan)
+  commissionAmount     Int             @default(0) // tarifa NetJob (3 % en servicios)
+  totalAmount          Int // lo que paga el cliente
+  currency             String          @default("COP")
+  status               PaymentStatus   @default(PENDING)
+  gatewayTransactionId String?
+  paymentMethod        String?
+  gatewayResponse      Json?
+  payoutStatus         PayoutStatus    @default(NONE)
+  payoutReleasedAt     DateTime?
+  /// Tarifa aplicada (0.03 normal, 0.01 con beneficio de cliente frecuente o referido)
+  commissionRate       Float?
+  loyaltyApplied       Boolean         @default(false)
+  /// Descuento sobre el valor base (ej. suscripción con premio por desempeño)
+  discountAmount       Int             @default(0)
+  discountNote         String?
+  /// Días de perfil destacado comprados (kind = PROMOTION)
+  promoDays            Int?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  @@index([payerId])
+  @@index([requestId])
+}
+
+/// Reseña que el profesional deja sobre el cliente al terminar el servicio.
+model ClientReview {
+  id           String         @id @default(cuid())
+  requestId    String         @unique
+  request      ServiceRequest @relation(fields: [requestId], references: [id])
+  authorId     String
+  author       User           @relation("ClientReviewAuthor", fields: [authorId], references: [id])
+  clientId     String
+  client       User           @relation("ClientReviewed", fields: [clientId], references: [id])
+  rating       Int
+  comment      String?
+  reported     Boolean        @default(false)
+  reportReason String?
+  hidden       Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+
+  @@index([clientId])
+}
+
+model Review {
+  id             String              @id @default(cuid())
+  requestId      String              @unique
+  request        ServiceRequest      @relation(fields: [requestId], references: [id])
+  authorId       String
+  author         User                @relation("ReviewAuthor", fields: [authorId], references: [id])
+  professionalId String
+  professional   ProfessionalProfile @relation(fields: [professionalId], references: [id])
+  rating         Int
+  comment        String?
+  reported       Boolean             @default(false)
+  reportReason   String?
+  hidden         Boolean             @default(false)
+  createdAt      DateTime            @default(now())
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  title     String
+  body      String
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+}
+
+/// Planes configurables desde el panel admin. Los límites null = ilimitado.
+model SubscriptionPlan {
+  id                     String         @id @default(cuid())
+  code                   String         @unique
+  name                   String
+  priceMonthly           Int
+  description            String?
+  features               String[]       @default([])
+  maxServices            Int?
+  maxPortfolio           Int?
+  searchBoost            Int            @default(0) // peso extra en el orden de búsqueda
+  /// Beneficios reales del plan (los aplica el backend)
+  badge                  String? // insignia visible al cliente: "Plus", "Premium"
+  popular                Boolean        @default(false) // etiqueta "Más popular"
+  hasStats               Boolean        @default(false) // estadísticas detalladas de ingresos
+  prioritySupport        Boolean        @default(false) // soporte prioritario por WhatsApp
+  featuredDays           Int            @default(0) // días de perfil destacado incluidos al activar
+  recommendationPriority Boolean        @default(false) // primero en "Recomendados para ti"
+  verificationPriority   Boolean        @default(false) // primero en la cola de verificación
+  active                 Boolean        @default(true)
+  sortOrder              Int            @default(0)
+  subscriptions          Subscription[]
+}
+
+model Subscription {
+  id             String              @id @default(cuid())
+  professionalId String
+  professional   ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  planId         String
+  plan           SubscriptionPlan    @relation(fields: [planId], references: [id])
+  status         SubscriptionStatus  @default(PENDING)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  createdAt      DateTime            @default(now())
+  /// Aviso de renovación enviado (para no repetirlo)
+  reminderSentAt DateTime?
+  payments       Payment[]
+
+  @@index([professionalId, status])
+}
+
+/// Visita al perfil público: alimenta "lo que tu plan te trajo este mes".
+model ProfileView {
+  id             String              @id @default(cuid())
+  professionalId String
+  professional   ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  createdAt      DateTime            @default(now())
+
+  @@index([professionalId, createdAt])
+}
+
+/// Reclamación entre cliente y profesional sobre una solicitud. La resuelve el administrador.
+model Claim {
+  id          String         @id @default(cuid())
+  requestId   String
+  request     ServiceRequest @relation(fields: [requestId], references: [id])
+  openedById  String
+  openedBy    User           @relation("ClaimOpener", fields: [openedById], references: [id])
+  againstId   String
+  against     User           @relation("ClaimAgainst", fields: [againstId], references: [id])
+  type        ClaimType
+  description String
+  photos      String[]       @default([])
+  status      ClaimStatus    @default(OPEN)
+  action      ClaimAction    @default(NONE)
+  resolution  String?
+  createdAt   DateTime       @default(now())
+  resolvedAt  DateTime?
+
+  @@index([requestId])
+  @@index([status])
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+/// Bloqueo en la agenda del profesional (vacaciones, compromisos): no recibe citas en ese rango.
+model CalendarBlock {
+  id             String              @id @default(cuid())
+  professionalId String
+  professional   ProfessionalProfile @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  startsAt       DateTime
+  endsAt         DateTime
+  reason         String?
+  createdAt      DateTime            @default(now())
+
+  @@index([professionalId, startsAt])
+}
+
+/// Nota privada de un participante sobre una cita (solo la ve quien la escribió).
+model AppointmentNote {
+  id        String         @id @default(cuid())
+  requestId String
+  request   ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  userId    String
+  note      String
+  updatedAt DateTime       @updatedAt
+
+  @@unique([requestId, userId])
+}
