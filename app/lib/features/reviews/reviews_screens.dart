@@ -28,7 +28,7 @@ class ReviewsSummaryCard extends StatelessWidget {
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.fromLTRB(18, 22, 18, 20),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), border: Border.all(color: const Color(0xFF33244D))),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(26), border: Border.all(color: const Color(0xFF2F6049))),
           child: Column(children: [
             Row(children: [
               Expanded(child: _stat('$count', count == 1 ? 'Reseña' : 'Reseñas')),
@@ -38,7 +38,7 @@ class ReviewsSummaryCard extends StatelessWidget {
                 center: Column(mainAxisSize: MainAxisSize.min, children: [
                   Text(count == 0 ? '—' : avg.toStringAsFixed(1),
                       style: TextStyle(fontFamily: NetJobFonts.display, color: Colors.white, fontSize: 40, fontWeight: FontWeight.w800, letterSpacing: -1)),
-                  const Text('de 5', style: TextStyle(color: Color(0xFFB9AECD), fontSize: 15)),
+                  const Text('de 5', style: TextStyle(color: Color(0xFFB9CDC0), fontSize: 15)),
                 ]),
               ),
               Expanded(child: _stat(reviews.isEmpty ? '—' : '$recommend%', 'Recomiendan')),
@@ -59,7 +59,7 @@ class ReviewsSummaryCard extends StatelessWidget {
   Widget _stat(String value, String label) => Column(children: [
         Text(value, style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Color(0xFFB9AECD), fontSize: 14)),
+        Text(label, style: const TextStyle(color: Color(0xFFB9CDC0), fontSize: 14)),
       ]);
 }
 
@@ -75,7 +75,7 @@ class ReviewTile extends StatelessWidget {
     final rating = (r['rating'] as num).toDouble();
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-      decoration: BoxDecoration(border: last ? null : const Border(bottom: BorderSide(color: Color(0xFF33244D)))),
+      decoration: BoxDecoration(border: last ? null : const Border(bottom: BorderSide(color: Color(0xFF2F6049)))),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         RatingRing(
           value: rating,
@@ -96,15 +96,15 @@ class ReviewTile extends StatelessWidget {
             ]),
             const SizedBox(height: 3),
             Text('${rating.toStringAsFixed(0)} de 5 · ${timeAgo(r['createdAt'])}',
-                style: const TextStyle(color: Color(0xFFB9AECD), fontSize: 14)),
+                style: const TextStyle(color: Color(0xFFB9CDC0), fontSize: 14)),
             if (r['comment'] != null && (r['comment'] as String).isNotEmpty) ...[
               const SizedBox(height: 6),
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                   margin: const EdgeInsets.only(right: 8, top: 1),
-                  decoration: BoxDecoration(color: const Color(0xFF3B2560), borderRadius: BorderRadius.circular(8)),
-                  child: const Text('Opinión', style: TextStyle(color: Color(0xFFE3C4FF), fontWeight: FontWeight.w800, fontSize: 11)),
+                  decoration: BoxDecoration(color: const Color(0xFF2F6049), borderRadius: BorderRadius.circular(8)),
+                  child: const Text('Opinión', style: TextStyle(color: Color(0xFFD3E27F), fontWeight: FontWeight.w800, fontSize: 11)),
                 ),
                 Expanded(
                   child: Text(r['comment'], style: const TextStyle(color: Colors.white, fontSize: 14.5, height: 1.35)),
@@ -133,14 +133,14 @@ class ReviewsList extends StatelessWidget {
         padding: const EdgeInsets.all(22),
         decoration: BoxDecoration(color: NetJobColors.nightCard, borderRadius: BorderRadius.circular(24)),
         child: Text(emptyText ?? 'Aún no hay reseñas. Aparecerán cuando los clientes califiquen sus servicios.',
-            style: const TextStyle(color: Color(0xFFB9AECD))),
+            style: const TextStyle(color: Color(0xFFB9CDC0))),
       );
     }
     return Container(
       decoration: BoxDecoration(
         color: NetJobColors.nightCard,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF33244D)),
+        border: Border.all(color: const Color(0xFF2F6049)),
       ),
       child: Column(children: [
         for (var i = 0; i < shown.length; i++) ReviewTile(r: shown[i], last: i == shown.length - 1),
@@ -177,7 +177,7 @@ class ReviewsScreen extends StatelessWidget {
               child: ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 32), children: [
                 Text('Reseñas', style: TextStyle(fontFamily: NetJobFonts.display, color: Colors.white, fontSize: 40, fontWeight: FontWeight.w800, letterSpacing: -1.2)),
                 const SizedBox(height: 2),
-                Text(p['user']['name'], style: const TextStyle(color: Color(0xFF2A1E3D), fontSize: 19)),
+                Text(p['user']['name'], style: const TextStyle(color: Color(0xFFB9CDC0), fontSize: 19)),
                 const SizedBox(height: 22),
                 Text('Resumen', style: TextStyle(fontFamily: NetJobFonts.display, color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 12),
@@ -222,7 +222,7 @@ class ReviewsPreview extends StatelessWidget {
         if (reviews.length > 3)
           TextButton(
             onPressed: () => context.push('/pro/${profile['id']}/reviews'),
-            child: Text('Ver las ${reviews.length} reseñas', style: const TextStyle(color: NetJobColors.mint, fontWeight: FontWeight.w800)),
+            child: Text('Ver las ${reviews.length} reseñas', style: const TextStyle(color: NetJobColors.lime, fontWeight: FontWeight.w800)),
           ),
       ]),
     );
@@ -251,7 +251,7 @@ class ClientReviewsScreen extends StatelessWidget {
               child: ListView(padding: const EdgeInsets.fromLTRB(16, 0, 16, 32), children: [
                 Text('Reseñas', style: TextStyle(fontFamily: NetJobFonts.display, color: Colors.white, fontSize: 40, fontWeight: FontWeight.w800, letterSpacing: -1.2)),
                 const SizedBox(height: 2),
-                Text('${c['name']} · como cliente', style: const TextStyle(color: Color(0xFF2A1E3D), fontSize: 19)),
+                Text('${c['name']} · como cliente', style: const TextStyle(color: Color(0xFFB9CDC0), fontSize: 19)),
                 const SizedBox(height: 22),
                 Text('Resumen', style: TextStyle(fontFamily: NetJobFonts.display, color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 12),

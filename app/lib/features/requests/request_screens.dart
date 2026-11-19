@@ -96,7 +96,7 @@ class _RequestList extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: needsMe ? FontWeight.w700 : FontWeight.w500,
-                                color: needsMe ? const Color(0xFFFFB86B) : NetJobColors.subtle,
+                                color: needsMe ? const Color(0xFFC77A12) : NetJobColors.subtle,
                               )),
                         ]),
                       ),
@@ -334,7 +334,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
                       ? NetJobColors.accent
                       : i == current
                           ? NetJobColors.primary
-                          : const Color(0xFF2A1E3D),
+                          : const Color(0xFFDDE1D5),
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
@@ -380,9 +380,9 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
     final highlight = (!isPro && (stage == 'PAY_DIAGNOSTIC' || stage == 'PAY_SERVICE')) ||
         (isPro && (stage == 'PENDING' || stage == 'DIAGNOSIS' || stage == 'READY_TO_START'));
     return Card(
-      color: highlight ? const Color(0xFF2A1A33) : NetJobColors.primary.withValues(alpha: 0.05),
+      color: highlight ? const Color(0xFFFBEBDA) : NetJobColors.primary.withValues(alpha: 0.05),
       child: ListTile(
-        leading: Icon(icon, color: highlight ? const Color(0xFFFFB86B) : NetJobColors.primary),
+        leading: Icon(icon, color: highlight ? const Color(0xFFC77A12) : NetJobColors.primary),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
         subtitle: Text(body),
       ),
@@ -415,8 +415,8 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
       if (!isPro && enRoute) ...[
         const SizedBox(height: 8),
         Material(
-          color: const Color(0xFF123226),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: const BorderSide(color: Color(0x666DFFB4))),
+          color: const Color(0xFF1B4332),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22), side: const BorderSide(color: Color(0x66D3E27F))),
           child: InkWell(
             borderRadius: BorderRadius.circular(22),
             onTap: () => context.push('/requests/${r['id']}/track'),
@@ -432,7 +432,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text('${(other['name'] as String).split(' ').first} va en camino', style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w800)),
-                    const Text('Toca para ver por dónde va en el mapa', style: TextStyle(color: Color(0xFFB9E8D2))),
+                    const Text('Toca para ver por dónde va en el mapa', style: TextStyle(color: Color(0xFFCFE6D8))),
                   ]),
                 ),
                 const Icon(Icons.chevron_right_rounded, color: Colors.white),
@@ -465,15 +465,15 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
               child: Row(children: [
                 Container(
                   padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(color: NetJobColors.primary, shape: BoxShape.circle),
-                  child: const Icon(Icons.navigation_rounded, color: NetJobColors.onPrimary),
+                  decoration: const BoxDecoration(color: NetJobColors.orange, shape: BoxShape.circle),
+                  child: const Icon(Icons.navigation_rounded, color: Colors.white),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(enRoute ? 'Vas en camino' : 'Cómo llegar', style: const TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w800)),
                     Text(enRoute ? 'El cliente está viendo tu ubicación' : 'Ruta y aviso de "Voy en camino" · ${r['address']}',
-                        maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: enRoute ? NetJobColors.mint : const Color(0xFFB9AECD))),
+                        maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: enRoute ? NetJobColors.lime : NetJobColors.onDarkSoft)),
                   ]),
                 ),
                 const Icon(Icons.chevron_right_rounded, color: Colors.white),
@@ -539,7 +539,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
             ],
             if (r['cancelReason'] != null) ...[
               const SizedBox(height: 8),
-              Text('Motivo de cancelación: ${r['cancelReason']}', style: const TextStyle(color: Color(0xFFFF7A9C))),
+              Text('Motivo de cancelación: ${r['cancelReason']}', style: const TextStyle(color: Color(0xFFC8452F))),
             ],
           ]),
         ),
@@ -589,7 +589,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
                   width: double.infinity,
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: const Color(0xFF241834), borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(color: const Color(0xFFE6E9DE), borderRadius: BorderRadius.circular(10)),
                   child: Text('“${r['quoteNote']}”', style: const TextStyle(fontStyle: FontStyle.italic)),
                 ),
               AmountRow('Valor del servicio', cop(charge['serviceAmount'])),
@@ -608,7 +608,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
                     style: TextStyle(fontSize: 12, color: NetJobColors.muted)),
               const SizedBox(height: 6),
               Row(children: [
-                Icon(paid ? Icons.check_circle : Icons.pending_outlined, size: 18, color: paid ? const Color(0xFF6DFFB4) : NetJobColors.muted),
+                Icon(paid ? Icons.check_circle : Icons.pending_outlined, size: 18, color: paid ? const Color(0xFF2E8B57) : NetJobColors.muted),
                 const SizedBox(width: 6),
                 Flexible(child: Text(_payoutText(r, paid, isPro))),
                 const Spacer(),
@@ -745,7 +745,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> with WidgetsB
         ),
         Text(amount, style: const TextStyle(fontWeight: FontWeight.w700)),
         const SizedBox(width: 8),
-        Icon(paid ? Icons.check_circle : Icons.pending_outlined, size: 18, color: paid ? const Color(0xFF6DFFB4) : NetJobColors.muted),
+        Icon(paid ? Icons.check_circle : Icons.pending_outlined, size: 18, color: paid ? const Color(0xFF2E8B57) : NetJobColors.muted),
       ]);
 
   Widget _row(IconData icon, String text) => Padding(
@@ -1108,12 +1108,12 @@ class _ChatScreenState extends State<ChatScreen> {
                             decoration: BoxDecoration(
                               color: mine ? NetJobColors.primary : NetJobColors.cardHigh,
                               borderRadius: BorderRadius.circular(14),
-                              border: mine ? null : Border.all(color: const Color(0xFF2A1E3D)),
+                              border: mine ? null : Border.all(color: const Color(0xFFDDE1D5)),
                             ),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                               Text(m['content'], style: TextStyle(color: mine ? NetJobColors.onPrimary : NetJobColors.ink)),
                               const SizedBox(height: 2),
-                              Text(fmtTime(m['createdAt']), style: TextStyle(fontSize: 10, color: mine ? const Color(0x991A0B2B) : NetJobColors.muted)),
+                              Text(fmtTime(m['createdAt']), style: TextStyle(fontSize: 10, color: mine ? const Color(0x99F8F6EE) : NetJobColors.muted)),
                             ]),
                           ),
                         );

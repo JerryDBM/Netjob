@@ -48,7 +48,7 @@ class BenefitsScreen extends StatelessWidget {
                       credits > 0
                           ? 'En tu próximo servicio la tarifa NetJob baja del $standard al $reduced. Se aplica sola al pagar.'
                           : 'Cada $every servicios finalizados, si tu calificación como cliente es mayor a ${loyalty['minRating']}, un servicio paga $reduced en lugar de $standard.',
-                      style: const TextStyle(color: NetJobColors.textSoft, height: 1.35),
+                      style: const TextStyle(color: NetJobColors.onDarkSoft, height: 1.35),
                     ),
                   ]),
                 ),

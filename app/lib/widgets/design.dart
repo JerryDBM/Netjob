@@ -59,9 +59,9 @@ class PillTabs extends StatelessWidget {
               decoration: ShapeDecoration(
                 shape: const StadiumBorder(),
                 gradient: it.$1 == selected ? NetJobColors.gradient : null,
-                color: it.$1 == selected ? null : const Color(0xFF241834),
+                color: it.$1 == selected ? null : const Color(0xFFE6E9DE),
                 shadows: it.$1 == selected
-                    ? const [BoxShadow(color: Color(0x40C98BFF), blurRadius: 14, offset: Offset(0, 6))]
+                    ? const [BoxShadow(color: Color(0x261B4332), blurRadius: 14, offset: Offset(0, 6))]
                     : const [],
               ),
               child: Material(
@@ -108,7 +108,7 @@ class HighlightCard extends StatelessWidget {
         color: NetJobColors.card,
         borderRadius: BorderRadius.circular(26),
         border: Border.all(color: NetJobColors.primary, width: 3.5),
-        boxShadow: const [BoxShadow(color: Color(0x26C98BFF), blurRadius: 24, offset: Offset(0, 10))],
+        boxShadow: const [BoxShadow(color: Color(0x141B4332), blurRadius: 24, offset: Offset(0, 10))],
       ),
       child: Material(
         color: Colors.transparent,
@@ -204,8 +204,8 @@ class RatingRing extends StatelessWidget {
     this.max = 5,
     this.size = 150,
     this.stroke = 12,
-    this.color = NetJobColors.mint,
-    this.track = const Color(0xFF33244D),
+    this.color = NetJobColors.lime,
+    this.track = const Color(0xFF2F6049),
     this.center,
   });
   final double value;
@@ -281,8 +281,8 @@ class LabeledBar extends StatelessWidget {
         child: LinearProgressIndicator(
           value: total == 0 ? 0 : value / total,
           minHeight: 6,
-          color: NetJobColors.mint,
-          backgroundColor: dark ? const Color(0xFF33244D) : const Color(0xFF241834),
+          color: dark ? NetJobColors.lime : NetJobColors.mint,
+          backgroundColor: dark ? const Color(0xFF2F6049) : const Color(0xFFE6E9DE),
         ),
       ),
       const SizedBox(height: 6),

@@ -10,7 +10,7 @@ void toast(BuildContext context, Object message, {bool error = true}) {
     ..hideCurrentSnackBar()
     ..showSnackBar(SnackBar(
       content: Text(message.toString()),
-      backgroundColor: error ? const Color(0xFFFF7A9C) : const Color(0xFF6DFFB4),
+      backgroundColor: error ? const Color(0xFFC8452F) : const Color(0xFF2E8B57),
       behavior: SnackBarBehavior.floating,
     ));
 }

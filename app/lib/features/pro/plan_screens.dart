@@ -25,16 +25,16 @@ class PlanBadge extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: compact ? 6 : 9, vertical: compact ? 2 : 4),
         decoration: BoxDecoration(
-          gradient: premium ? const LinearGradient(colors: [Color(0xFFFFD98A), Color(0xFFFFB86B)]) : null,
-          color: premium ? null : NetJobColors.primary.withValues(alpha: 0.18),
+          gradient: premium ? const LinearGradient(colors: [Color(0xFFE6EFA6), Color(0xFFD3E27F)]) : null,
+          color: premium ? null : NetJobColors.bubble,
           borderRadius: BorderRadius.circular(8),
-          border: premium ? null : Border.all(color: NetJobColors.primary.withValues(alpha: 0.5)),
+          border: premium ? null : Border.all(color: NetJobColors.primary.withValues(alpha: 0.25)),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(premium ? Icons.workspace_premium_rounded : Icons.bolt_rounded, size: compact ? 11 : 14, color: premium ? const Color(0xFF3A2400) : NetJobColors.primaryLight),
+          Icon(premium ? Icons.workspace_premium_rounded : Icons.bolt_rounded, size: compact ? 11 : 14, color: premium ? const Color(0xFF1B4332) : NetJobColors.primary),
           const SizedBox(width: 3),
           Text(badge!,
-              style: TextStyle(fontSize: compact ? 10 : 12, fontWeight: FontWeight.w800, color: premium ? const Color(0xFF3A2400) : NetJobColors.primaryLight)),
+              style: TextStyle(fontSize: compact ? 10 : 12, fontWeight: FontWeight.w800, color: premium ? const Color(0xFF1B4332) : NetJobColors.primary)),
         ]),
       ),
     );
@@ -230,7 +230,7 @@ class SubscriptionScreen extends StatelessWidget {
   Widget _header(BuildContext context, Map? active, Map me, List<Map> plans, Future<void> Function() reload, int discount) {
     if (active == null) {
       return const Card(
-        color: Color(0xFF2A1A33),
+        color: Color(0xFFFBEBDA),
         child: ListTile(
           leading: Icon(Icons.info_outline, color: NetJobColors.warning),
           title: Text('Elige un plan para empezar'),
@@ -258,18 +258,18 @@ class SubscriptionScreen extends StatelessWidget {
           soon
               ? (days <= 1 ? 'Vence mañana (${fmtDate(active['endsAt'])}). Renueva para no desaparecer de las búsquedas.' : 'Vence en $days días (${fmtDate(active['endsAt'])}). Renueva para no desaparecer de las búsquedas.')
               : 'Activo hasta el ${fmtDate(active['endsAt'])} · quedan $days días',
-          style: TextStyle(color: soon ? NetJobColors.warning : NetJobColors.textSoft, fontWeight: soon ? FontWeight.w700 : null),
+          style: TextStyle(color: soon ? const Color(0xFFF5B27A) : NetJobColors.onDarkSoft, fontWeight: soon ? FontWeight.w700 : null),
         ),
         const SizedBox(height: 12),
         Row(children: [
           FilledButton.icon(
-            style: FilledButton.styleFrom(minimumSize: const Size(0, 44)),
+            style: FilledButton.styleFrom(minimumSize: const Size(0, 44), backgroundColor: NetJobColors.orange, foregroundColor: Colors.white),
             onPressed: () => _choose(context, plans.firstWhere((p) => p['id'] == active['planId'], orElse: () => plan), discount, reload),
             icon: const Icon(Icons.autorenew_rounded, size: 18),
             label: const Text('Renovar'),
           ),
           const SizedBox(width: 10),
-          const Expanded(child: Text('Renovar suma 30 días a tu fecha actual.', style: TextStyle(color: NetJobColors.subtle, fontSize: 12.5))),
+          const Expanded(child: Text('Renovar suma 30 días a tu fecha actual.', style: TextStyle(color: NetJobColors.onDarkSoft, fontSize: 12.5))),
         ]),
       ]),
     );
@@ -405,7 +405,7 @@ class SubscriptionScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 2),
           color: current ? NetJobColors.primary.withValues(alpha: 0.10) : null,
           child: v is bool
-              ? Icon(v ? Icons.check_circle_rounded : Icons.remove_rounded, size: 18, color: v ? NetJobColors.mint : const Color(0xFF5E5275))
+              ? Icon(v ? Icons.check_circle_rounded : Icons.remove_rounded, size: 18, color: v ? NetJobColors.mint : const Color(0xFFB3B9B1))
               : Text('$v', textAlign: TextAlign.center, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700)),
         );
 
@@ -414,7 +414,7 @@ class SubscriptionScreen extends StatelessWidget {
       child: Table(
         columnWidths: const {0: FlexColumnWidth(1.5)},
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        border: const TableBorder(horizontalInside: BorderSide(color: Color(0xFF241834))),
+        border: const TableBorder(horizontalInside: BorderSide(color: Color(0xFFE6E9DE))),
         children: [
           TableRow(children: [
             const SizedBox.shrink(),
@@ -461,7 +461,7 @@ class SubscriptionScreen extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: current ? NetJobColors.primary : popular ? NetJobColors.primary.withValues(alpha: 0.45) : const Color(0xFF2A1E3D), width: current ? 2 : 1),
+          side: BorderSide(color: current ? NetJobColors.primary : popular ? NetJobColors.primary.withValues(alpha: 0.45) : const Color(0xFFDDE1D5), width: current ? 2 : 1),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -691,7 +691,7 @@ class PromotionsScreen extends StatelessWidget {
                     until != null
                         ? 'Apareces primero en tu zona, con la etiqueta "Destacado", hasta el ${fmtDate(until)}. Si compras más días, se suman.'
                         : 'Un perfil destacado aparece antes que todos los demás en las búsquedas de tu zona y lleva la etiqueta "Destacado".',
-                    style: const TextStyle(color: NetJobColors.textSoft, height: 1.35),
+                    style: const TextStyle(color: NetJobColors.onDarkSoft, height: 1.35),
                   ),
                 ]),
               ),

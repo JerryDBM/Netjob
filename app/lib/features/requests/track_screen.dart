@@ -418,7 +418,7 @@ class _TrackScreenState extends State<TrackScreen> {
         color: NetJobColors.mapBg,
         alignment: const Alignment(0, -0.45),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Icon(_enRoute ? Icons.directions_car_filled_rounded : Icons.map_outlined, size: 96, color: const Color(0xFFB7A3DD)),
+          Icon(_enRoute ? Icons.directions_car_filled_rounded : Icons.map_outlined, size: 96, color: const Color(0xFFB9C9BD)),
           const SizedBox(height: 10),
           Text(
             mapsAvailable ? 'Esperando la ubicación…' : 'El mapa no está disponible en este dispositivo',

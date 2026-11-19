@@ -322,7 +322,7 @@ Future<void> showLocationSheet(BuildContext context) {
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: const Color(0xFF2A1A33), borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(color: const Color(0xFFFBEBDA), borderRadius: BorderRadius.circular(10)),
                 child: Text(loc.message!, style: const TextStyle(fontSize: 13)),
               ),
             ],
@@ -389,7 +389,7 @@ class _MunicipioChooserState extends State<_MunicipioChooser> {
         department: _dept,
         city: _city,
         decorate: (w) => Container(
-          decoration: BoxDecoration(color: const Color(0xFF241834), borderRadius: BorderRadius.circular(18)),
+          decoration: BoxDecoration(color: const Color(0xFFE6E9DE), borderRadius: BorderRadius.circular(18)),
           child: w,
         ),
         onChanged: (d, c) {
