@@ -102,7 +102,7 @@ npm run demo:seed-near -- 9.7174 -75.1202 "El Carmen de Bolívar" carmen
 26. **Recordatorios de citas**: un día antes y una hora antes, a ambas partes (al profesional también si una solicitud para mañana sigue sin respuesta).
 27. **Valor de la visita de diagnóstico por profesional** (ver punto 7).
 28. **Administración ampliada**: categorías (crear, editar, activar), pagos y transacciones con filtros y totales, y **configuración general** editable sin redesplegar (comisión, tarifa reducida, radio de búsqueda, garantía, tope de la visita, fotos mínimas, puntaje de la capacitación, umbral de revisión, duración de la suscripción).
-29. **50 profesionales de prueba** en Cartagena, El Carmen de Bolívar, Barranquilla, Bogotá, Medellín y Sincelejo, con descripción detallada, servicios, portafolio con fotos, horarios, plan activo y reseñas (`demo-pro-01@netjob.co` … `demo-pro-50@netjob.co`, contraseña `NetJob2026!`). Las fotos son de Flickr con licencia Creative Commons (créditos en cada foto del portafolio).
+29. **50 profesionales de prueba**, todos en Cartagena y repartidos por 20 barrios (máximo 9 km del centro), con descripción detallada, servicios, portafolio con fotos, horarios, plan activo y reseñas (`demo-pro-01@netjob.co` … `demo-pro-50@netjob.co`, contraseña `NetJob2026!`). Las fotos son de Flickr con licencia Creative Commons (créditos en cada foto del portafolio).
 
 ## Segunda entrega: confianza, seguimiento y beneficios
 
@@ -194,6 +194,8 @@ Los puntos de la sección 9 del documento siguen abiertos; implementé valores p
 cd backend
 npm run demo:photos   # descarga las fotos (una vez; quedan en prisma/demo-photos, fuera de git)
 npm run demo:pros     # crea los 50 profesionales (no duplica si se ejecuta de nuevo)
+npm run demo:clients  # 20 clientes en Cartagena: demo-cliente-1 … demo-cliente-20@netjob.co (NetJob2026!)
+npm run demo:cartagena  # pasa a Cartagena todos los profesionales que ya existan
 ```
 
 ## Producción de prueba: Supabase + Render + APK

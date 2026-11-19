@@ -19,7 +19,9 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test --test-concurrency=1 tests/*.test.ts",
     "supabase:push": "dotenv -e .env.supabase -o -- prisma db push",
-    "supabase:seed": "dotenv -e .env.supabase -o -- tsx prisma/seed.ts && dotenv -e .env.supabase -o -- tsx scripts/seed-pros.ts"
+    "supabase:seed": "dotenv -e .env.supabase -o -- tsx prisma/seed.ts && dotenv -e .env.supabase -o -- tsx scripts/seed-pros.ts",
+    "demo:cartagena": "tsx scripts/move-to-cartagena.ts",
+    "demo:clients": "tsx scripts/seed-clients.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

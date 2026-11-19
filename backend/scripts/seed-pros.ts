@@ -1,5 +1,5 @@
 /**
- * Datos de prueba: 50 profesionales completos en seis ciudades de la Costa y el interior
+ * Datos de prueba: 50 profesionales completos en Cartagena, repartidos por barrios
  * (perfil detallado, servicios, portafolio con fotos, horarios, plan activo, verificación,
  * capacitación y reseñas reales de servicios finalizados).
  *
@@ -15,6 +15,7 @@ import bcrypt from 'bcryptjs';
 import type { PriceUnit } from '@prisma/client';
 import { prisma } from '../src/db.js';
 import { storeBuffer, cloudStorage, ensureBuckets } from '../src/lib/upload.js';
+import { BARRIOS, CARTAGENA, placeFor } from './cartagena.js';
 
 const PHOTOS = path.resolve('prisma/demo-photos');
 if (!fs.existsSync(PHOTOS)) {
@@ -519,11 +520,13 @@ for (const [i, p] of PEOPLE.entries()) {
     console.log(`Ya existe ${email}`);
     continue;
   }
-  const city = CITIES[p.city];
+  // Todos los profesionales de prueba atienden en Cartagena (repartidos por barrios)
+  const place = placeFor(i);
+  const city = { ...CARTAGENA, areas: BARRIOS.map((b) => b[0]) };
   const main = T[p.trades[0]];
   const second = p.trades[1] ? T[p.trades[1]] : null;
   const first = p.name.split(' ')[0];
-  const areas = [pick(city.areas, i), pick(city.areas, i + 2), pick(city.areas, i + 5)].filter((v, k, a) => a.indexOf(v) === k);
+  const areas = place.areas;
 
   // Perfil detallado: presentación, especialidades, forma de trabajo y cierre
   const bio = [
@@ -539,10 +542,7 @@ for (const [i, p] of PEOPLE.entries()) {
     .join(' ');
 
   // Ubicación: entre 0,8 y 7 km del centro de la ciudad, en distintas direcciones
-  const km = 0.8 + ((i * 37) % 62) / 10;
-  const angle = ((i * 83) % 360) * (Math.PI / 180);
-  const lat = city.lat + (km * Math.cos(angle)) / 110.57;
-  const lng = city.lng + (km * Math.sin(angle)) / (111.32 * Math.cos((city.lat * Math.PI) / 180));
+  const { lat, lng } = place;
 
   const pl = plan[p.plan];
   const maxServices = pl.maxServices ?? 5;
