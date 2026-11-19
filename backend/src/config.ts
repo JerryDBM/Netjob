@@ -70,7 +70,9 @@ export const config = {
     integritySecret: process.env.WOMPI_INTEGRITY_SECRET || '',
     eventsSecret: process.env.WOMPI_EVENTS_SECRET || '',
   },
-  paymentsMock: process.env.PAYMENTS_MOCK === 'true' && process.env.NODE_ENV !== 'production',
+  // Proyecto académico sin comercio en Wompi: con PAYMENTS_MOCK=true los pagos se simulan (también en
+  // el servidor de pruebas). Si se configuran llaves de Wompi, siempre se usa la pasarela real.
+  paymentsMock: process.env.PAYMENTS_MOCK === 'true',
 };
 
 if (process.env.NODE_ENV === 'production' && config.jwtSecret === 'dev-secret') {

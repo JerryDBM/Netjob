@@ -137,7 +137,7 @@ Para que el profesional vea el valor de su plan: tabla comparativa con la etique
 
 ### Modo de pagos
 
-- **Sin llaves de Wompi** y `PAYMENTS_MOCK=true` → la app muestra "Pago en modo pruebas" para simular aprobado/rechazado. Solo funciona fuera de producción.
+- **Sin llaves de Wompi** y `PAYMENTS_MOCK=true` → la app muestra "Pago en modo pruebas" para simular aprobado/rechazado (también en el servidor de Render). Con llaves de Wompi siempre se usa la pasarela.
 - **Con llaves sandbox**: llena `WOMPI_PUBLIC_KEY`, `WOMPI_PRIVATE_KEY`, `WOMPI_INTEGRITY_SECRET` y `WOMPI_EVENTS_SECRET` en `backend/.env` y configura en Wompi la URL de eventos `{PUBLIC_URL}/payments/webhooks/wompi` (el backend debe ser accesible desde internet, por ejemplo con un túnel).
 
 ## Configurar Wompi sandbox

@@ -14,7 +14,7 @@ import path from 'node:path';
 import bcrypt from 'bcryptjs';
 import type { PriceUnit } from '@prisma/client';
 import { prisma } from '../src/db.js';
-import { storeBuffer, cloudStorage } from '../src/lib/upload.js';
+import { storeBuffer, cloudStorage, ensureBuckets } from '../src/lib/upload.js';
 
 const PHOTOS = path.resolve('prisma/demo-photos');
 if (!fs.existsSync(PHOTOS)) {
@@ -496,6 +496,7 @@ if (!cat.plomeria || !plan.BASIC) {
   console.error('Faltan categorías o planes. Ejecuta primero: npm run db:seed');
   process.exit(1);
 }
+await ensureBuckets();
 console.log(`Imágenes en: ${cloudStorage() ? 'Supabase Storage' : 'uploads/ (disco local)'}`);
 
 const clientUsers = [];
