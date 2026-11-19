@@ -66,7 +66,7 @@ class ProDashboardScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Card(
-                      color: const Color(0xFF33201A),
+                      color: const Color(0xFFFBE3D6),
                       child: ListTile(
                         leading: const Icon(Icons.rate_review_outlined, color: NetJobColors.warning),
                         title: const Text('Tu cuenta está en revisión'),
@@ -77,12 +77,12 @@ class ProDashboardScreen extends StatelessWidget {
                     ),
                   ),
                 Card(
-                  color: sub == null || soon ? const Color(0xFF2A1A33) : null,
+                  color: sub == null || soon ? const Color(0xFFFBEBDA) : null,
                   shape: soon
                       ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: NetJobColors.warning))
                       : null,
                   child: ListTile(
-                    leading: Icon(Icons.workspace_premium, color: sub == null || soon ? const Color(0xFFFFB86B) : NetJobColors.accent),
+                    leading: Icon(Icons.workspace_premium, color: sub == null || soon ? const Color(0xFFC77A12) : NetJobColors.accent),
                     title: Row(children: [
                       Flexible(child: Text(sub == null ? 'Sin suscripción activa' : 'Plan ${sub['plan']['name']}')),
                       if (sub != null) ...[const SizedBox(width: 8), PlanBadge(sub['plan']['badge'], compact: true)],
@@ -148,7 +148,7 @@ class ProDashboardScreen extends StatelessWidget {
                 if (verification != 'APPROVED') ...[
                   const SizedBox(height: 10),
                   Card(
-                    color: verificationRequired ? const Color(0xFF2A1A33) : null,
+                    color: verificationRequired ? const Color(0xFFFBEBDA) : null,
                     shape: verificationRequired
                         ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: NetJobColors.warning))
                         : null,
@@ -202,13 +202,13 @@ class ProDashboardScreen extends StatelessWidget {
                 Card(
                   color: NetJobColors.night,
                   child: ListTile(
-                    leading: const Icon(Icons.star_rounded, color: NetJobColors.mint),
+                    leading: const Icon(Icons.star_rounded, color: NetJobColors.lime),
                     title: const Text('Mis reseñas', style: TextStyle(color: Colors.white)),
                     subtitle: Text(
                       (stats['rating']['ratingCount'] ?? 0) == 0
                           ? 'Aún no tienes reseñas'
                           : '${stats['rating']['ratingAvg']} de 5 · ${stats['rating']['ratingCount']} opiniones',
-                      style: const TextStyle(color: Color(0xFFB9AECD)),
+                      style: const TextStyle(color: NetJobColors.onDarkSoft),
                     ),
                     trailing: const Icon(Icons.chevron_right, color: Colors.white),
                     onTap: () => context.push('/pro/${profile['id']}/reviews'),
@@ -276,7 +276,7 @@ class ProDashboardScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: NetJobColors.card,
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: on ? const Color(0x666DFFB4) : NetJobColors.border),
+                      border: Border.all(color: on ? const Color(0x662E8B57) : NetJobColors.border),
                     ),
                     child: Row(children: [
                       Container(
@@ -285,7 +285,7 @@ class ProDashboardScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: on ? NetJobColors.mint : NetJobColors.muted,
-                          boxShadow: on ? const [BoxShadow(color: Color(0x996DFFB4), blurRadius: 10)] : null,
+                          boxShadow: on ? const [BoxShadow(color: Color(0x992E8B57), blurRadius: 10)] : null,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -998,7 +998,7 @@ class _ProProfileEditScreenState extends State<ProProfileEditScreen> {
               const SizedBox(height: 8),
               Text(
                 _lat == null ? 'Aún no has marcado tu ubicación.' : 'Ubicación marcada (${_lat!.toStringAsFixed(4)}, ${_lng!.toStringAsFixed(4)})',
-                style: TextStyle(fontSize: 12, color: _lat == null ? const Color(0xFFFFB86B) : NetJobColors.accent),
+                style: TextStyle(fontSize: 12, color: _lat == null ? const Color(0xFFC77A12) : NetJobColors.accent),
               ),
               if (mapsAvailable) ...[
                 const SizedBox(height: 8),

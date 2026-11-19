@@ -201,14 +201,14 @@ class _ActiveRequestCard extends StatelessWidget {
     final pro = r['professional']['user'];
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      color: needsAction ? const Color(0xFF2A1A33) : null,
+      color: needsAction ? const Color(0xFFFBEBDA) : null,
       child: ListTile(
         leading: UserAvatar(url: pro['avatarUrl'], name: pro['name']),
         title: Text(r['service']['title'], maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w700)),
         subtitle: Text('${pro['name']} · ${fmtDateTime(r['scheduledAt'])}\n${stageLabel(stage, isPro: false)}', maxLines: 2),
         isThreeLine: true,
         trailing: needsAction
-            ? const Icon(Icons.payments_outlined, color: Color(0xFFFFB86B))
+            ? const Icon(Icons.payments_outlined, color: Color(0xFFC77A12))
             : StatusChip(r['status']),
         onTap: () async {
           await context.push('/requests/${r['id']}');
@@ -256,7 +256,7 @@ class ProCard extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 4, bottom: 2),
                     child: Wrap(spacing: 6, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center, children: [
                       PlanBadge(pro['planBadge'], compact: true),
-                      if (pro['featured'] == true) const _Tag('Destacado', Color(0xFFFFB86B), Icons.campaign_rounded),
+                      if (pro['featured'] == true) const _Tag('Destacado', Color(0xFFC77A12), Icons.campaign_rounded),
                       if (pro['recommended'] == true) const _Tag('Recomendado', NetJobColors.mint, Icons.rocket_launch_rounded),
                       if (note != null) _Tag(note!, NetJobColors.sky, Icons.replay_rounded),
                     ]),
@@ -277,9 +277,9 @@ class ProCard extends StatelessWidget {
                   ]),
                   if (pro['isAvailable'] == true)
                     const Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(Icons.circle, size: 8, color: Color(0xFF6DFFB4)),
+                      Icon(Icons.circle, size: 8, color: Color(0xFF2E8B57)),
                       SizedBox(width: 4),
-                      Text('Disponible', style: TextStyle(fontSize: 12, color: Color(0xFF6DFFB4))),
+                      Text('Disponible', style: TextStyle(fontSize: 12, color: Color(0xFF2E8B57))),
                     ]),
                 ]),
               ]),
@@ -587,7 +587,7 @@ class ProfessionalScreen extends StatelessWidget {
                       PlanBadge(p['planBadge']),
                       if (p['verified'] == true) const _Tag('Antecedentes verificados', NetJobColors.primary, Icons.verified_user_rounded),
                       if (p['trained'] == true) const _Tag('Capacitado por NetJob', NetJobColors.sky, Icons.school_rounded),
-                      if (p['featured'] == true) const _Tag('Destacado', Color(0xFFFFB86B), Icons.campaign_rounded),
+                      if (p['featured'] == true) const _Tag('Destacado', Color(0xFFC77A12), Icons.campaign_rounded),
                       if (p['recommended'] == true) const _Tag('Recomendado', NetJobColors.mint, Icons.rocket_launch_rounded),
                     ]),
                     if (p['headline'] != null) Text(p['headline'], textAlign: TextAlign.center, style: TextStyle(color: NetJobColors.subtle)),
@@ -612,7 +612,7 @@ class ProfessionalScreen extends StatelessWidget {
                     if (p['canReceiveRequests'] != true)
                       const Padding(
                         padding: EdgeInsets.only(top: 8),
-                        child: Text('Este profesional no está recibiendo solicitudes por ahora.', textAlign: TextAlign.center, style: TextStyle(color: Color(0xFFFFB86B))),
+                        child: Text('Este profesional no está recibiendo solicitudes por ahora.', textAlign: TextAlign.center, style: TextStyle(color: Color(0xFFC77A12))),
                       ),
                   ]),
                 ),

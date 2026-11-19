@@ -34,9 +34,9 @@ class _AuthBackgroundState extends State<AuthBackground> with SingleTickerProvid
             final w = c.maxWidth;
             final h = c.maxHeight;
             return Stack(children: [
-              _glow(left: -w * 0.35 + t * 20, top: -h * 0.12, size: w * 0.95, color: const Color(0xFF45186A)),
-              _glow(left: w * 0.45 - t * 24, top: h * 0.18 + t * 16, size: w * 0.75, color: const Color(0xFF1D2A7C)),
-              _glow(left: -w * 0.2 + t * 18, top: h * 0.62, size: w * 0.8, color: const Color(0xFF6A1D5C)),
+              _glow(left: -w * 0.35 + t * 20, top: -h * 0.12, size: w * 0.95, color: const Color(0xFFCFE6D8)),
+              _glow(left: w * 0.45 - t * 24, top: h * 0.18 + t * 16, size: w * 0.75, color: const Color(0xFFE9F0B8)),
+              _glow(left: -w * 0.2 + t * 18, top: h * 0.62, size: w * 0.8, color: const Color(0xFFF6D9C6)),
               _ring(left: w * 0.68, top: h * 0.06 + t * 10, size: w * 0.42),
               _ring(left: -w * 0.16, top: h * 0.8 - t * 8, size: w * 0.36),
               child!,
@@ -79,8 +79,8 @@ class _AuthBackgroundState extends State<AuthBackground> with SingleTickerProvid
           height: s,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: const Color(0x2EC98BFF), width: 1.5),
-            gradient: const RadialGradient(colors: [Color(0x00000000), Color(0x14C98BFF)]),
+            border: Border.all(color: const Color(0x2E1B4332), width: 1.5),
+            gradient: const RadialGradient(colors: [Color(0x00000000), Color(0x0F1B4332)]),
           ),
         ),
       ),
@@ -119,11 +119,11 @@ class _NetJobLogoState extends State<NetJobLogo> with SingleTickerProviderStateM
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF2A1A40), Color(0xFF150B22)],
+            colors: [Color(0xFF24563F), Color(0xFF12301F)],
           ),
-          border: Border.all(color: const Color(0x33E3C4FF), width: 1.5),
+          border: Border.all(color: const Color(0x33D3E27F), width: 1.5),
           boxShadow: const [
-            BoxShadow(color: Color(0x55C98BFF), blurRadius: 40, offset: Offset(0, 14)),
+            BoxShadow(color: Color(0x591B4332), blurRadius: 40, offset: Offset(0, 14)),
           ],
         ),
         child: CustomPaint(painter: BriefcasePainter()),
@@ -146,20 +146,20 @@ class BriefcasePainter extends CustomPainter {
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = w * 0.055
-        ..shader = const LinearGradient(colors: [NetJobColors.primaryLight, NetJobColors.primary]).createShader(handle.outerRect),
+        ..shader = const LinearGradient(colors: [Color(0xFFE6EFA6), NetJobColors.lime]).createShader(handle.outerRect),
     );
 
     // Cuerpo
     final bodyRect = Rect.fromLTRB(w * 0.18, h * 0.36, w * 0.82, h * 0.78);
     final body = RRect.fromRectAndRadius(bodyRect, Radius.circular(w * 0.09));
-    canvas.drawShadow(Path()..addRRect(body), const Color(0xAA8D6BFF), 10, false);
+    canvas.drawShadow(Path()..addRRect(body), const Color(0x66000000), 10, false);
     canvas.drawRRect(
       body,
       Paint()
         ..shader = const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [NetJobColors.primaryLight, NetJobColors.primary, NetJobColors.primaryDeep],
+          colors: [Color(0xFFE6EFA6), NetJobColors.lime, Color(0xFFB2C75A)],
         ).createShader(bodyRect),
     );
 
@@ -183,12 +183,12 @@ class BriefcasePainter extends CustomPainter {
 
     // Broche
     final clasp = RRect.fromRectAndRadius(Rect.fromCenter(center: Offset(w * 0.5, y), width: w * 0.15, height: h * 0.1), Radius.circular(w * 0.03));
-    canvas.drawRRect(clasp, Paint()..color = NetJobColors.onPrimary);
-    canvas.drawRRect(clasp.deflate(w * 0.018), Paint()..color = NetJobColors.mint);
+    canvas.drawRRect(clasp, Paint()..color = NetJobColors.primary);
+    canvas.drawRRect(clasp.deflate(w * 0.018), Paint()..color = NetJobColors.orange);
 
     // Destellos
-    _sparkle(canvas, Offset(w * 0.82, h * 0.22), w * 0.06, NetJobColors.mint);
-    _sparkle(canvas, Offset(w * 0.2, h * 0.26), w * 0.035, NetJobColors.pink);
+    _sparkle(canvas, Offset(w * 0.82, h * 0.22), w * 0.06, NetJobColors.orange);
+    _sparkle(canvas, Offset(w * 0.2, h * 0.26), w * 0.035, NetJobColors.lime);
   }
 
   void _sparkle(Canvas canvas, Offset c, double r, Color color) {
@@ -215,10 +215,10 @@ class GlassField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0x94180E26), // rgba(24,14,38,.58)
+        color: const Color(0xD9FCFBF6), // rgba(24,14,38,.58)
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: NetJobColors.border, width: 1.2),
-        boxShadow: const [BoxShadow(color: Color(0x40000000), blurRadius: 18, offset: Offset(0, 8))],
+        boxShadow: const [BoxShadow(color: Color(0x14000000), blurRadius: 18, offset: Offset(0, 8))],
       ),
       child: Theme(
         data: Theme.of(context).copyWith(
@@ -279,7 +279,7 @@ class _GradientButtonState extends State<GradientButton> {
             decoration: BoxDecoration(
               gradient: NetJobColors.gradient,
               borderRadius: BorderRadius.circular(40),
-              boxShadow: const [BoxShadow(color: Color(0x66C98BFF), blurRadius: 28, offset: Offset(0, 12))],
+              boxShadow: const [BoxShadow(color: Color(0x331B4332), blurRadius: 28, offset: Offset(0, 12))],
             ),
             child: Stack(alignment: Alignment.center, children: [
               widget.loading
@@ -291,7 +291,7 @@ class _GradientButtonState extends State<GradientButton> {
                 child: Container(
                   width: 44,
                   height: 44,
-                  decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0x261A0B2B)),
+                  decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0x26F8F6EE)),
                   child: Icon(widget.icon, color: NetJobColors.onPrimary),
                 ),
               ),

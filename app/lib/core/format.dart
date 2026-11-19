@@ -35,12 +35,12 @@ const statusLabel = {
 };
 
 const statusColor = {
-  'PENDING': Color(0xFFFFB86B),
-  'ACCEPTED': Color(0xFF7CC7FF),
-  'REJECTED': Color(0xFFFF7A9C),
-  'IN_PROGRESS': Color(0xFFB07CFF),
-  'COMPLETED': Color(0xFF6DFFB4),
-  'CANCELLED': Color(0xFF8A7FA3),
+  'PENDING': Color(0xFFC77A12),
+  'ACCEPTED': Color(0xFF3F7CAC),
+  'REJECTED': Color(0xFFC8452F),
+  'IN_PROGRESS': Color(0xFFE4602B),
+  'COMPLETED': Color(0xFF2E8B57),
+  'CANCELLED': Color(0xFF878E87),
 };
 
 /// Etapa del flujo de contratación (la calcula el backend en el detalle).
@@ -97,10 +97,10 @@ const claimTypeLabel = {
 const claimStatusLabel = {'OPEN': 'Abierta', 'IN_REVIEW': 'En revisión', 'RESOLVED': 'Resuelta', 'REJECTED': 'Cerrada'};
 
 const claimStatusColor = {
-  'OPEN': Color(0xFFFFB86B),
-  'IN_REVIEW': Color(0xFF7CC7FF),
-  'RESOLVED': Color(0xFF6DFFB4),
-  'REJECTED': Color(0xFF8A7FA3),
+  'OPEN': Color(0xFFC77A12),
+  'IN_REVIEW': Color(0xFF3F7CAC),
+  'RESOLVED': Color(0xFF2E8B57),
+  'REJECTED': Color(0xFF878E87),
 };
 
 const claimActionLabel = {

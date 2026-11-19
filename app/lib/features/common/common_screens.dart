@@ -212,19 +212,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
 /// Ícono y color por tipo de aviso.
 const _notifStyle = <String, (IconData, Color)>{
-  'REQUEST_NEW': (Icons.inbox_rounded, Color(0xFF8D6BFF)),
-  'REQUEST_STATUS': (Icons.sync_alt_rounded, Color(0xFFB07CFF)),
-  'REQUEST_QUOTE': (Icons.request_quote_rounded, Color(0xFFFF9F6B)),
-  'MESSAGE_NEW': (Icons.chat_bubble_rounded, Color(0xFF4FA8E8)),
-  'PAYMENT': (Icons.payments_rounded, Color(0xFF2FBF85)),
-  'REVIEW_NEW': (Icons.star_rounded, Color(0xFFE6A23C)),
-  'SUBSCRIPTION': (Icons.workspace_premium_rounded, Color(0xFF6B5BFF)),
-  'REMINDER': (Icons.alarm_rounded, Color(0xFFE0559F)),
-  'TRIP': (Icons.navigation_rounded, Color(0xFF2FBF85)),
-  'CLAIM': (Icons.fact_check_rounded, Color(0xFFFF9F6B)),
-  'VERIFICATION': (Icons.verified_user_rounded, Color(0xFF4FA8E8)),
-  'REWARD': (Icons.card_giftcard_rounded, Color(0xFFE6A23C)),
-  'ACCOUNT': (Icons.manage_accounts_rounded, Color(0xFFE0559F)),
+  'REQUEST_NEW': (Icons.inbox_rounded, Color(0xFF1B4332)),
+  'REQUEST_STATUS': (Icons.sync_alt_rounded, Color(0xFFE4602B)),
+  'REQUEST_QUOTE': (Icons.request_quote_rounded, Color(0xFFE4602B)),
+  'MESSAGE_NEW': (Icons.chat_bubble_rounded, Color(0xFF3F7CAC)),
+  'PAYMENT': (Icons.payments_rounded, Color(0xFF2E8B57)),
+  'REVIEW_NEW': (Icons.star_rounded, Color(0xFFD19A1E)),
+  'SUBSCRIPTION': (Icons.workspace_premium_rounded, Color(0xFF3D7A5C)),
+  'REMINDER': (Icons.alarm_rounded, Color(0xFFC65D3B)),
+  'TRIP': (Icons.navigation_rounded, Color(0xFF2E8B57)),
+  'CLAIM': (Icons.fact_check_rounded, Color(0xFFE4602B)),
+  'VERIFICATION': (Icons.verified_user_rounded, Color(0xFF3F7CAC)),
+  'REWARD': (Icons.card_giftcard_rounded, Color(0xFFD19A1E)),
+  'ACCOUNT': (Icons.manage_accounts_rounded, Color(0xFFC65D3B)),
 };
 
 /// A dónde lleva un aviso al tocarlo (null = no navega).
@@ -361,7 +361,7 @@ class _NotificationRow extends StatelessWidget {
       onTap: route == null ? null : () => context.push(route),
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xFF241834)))),
+        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xFFE6E9DE)))),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           IconBubble(icon: style.$1, color: style.$2),
           const SizedBox(width: 14),
@@ -387,7 +387,7 @@ class _NotificationRow extends StatelessWidget {
           ),
           if (route != null) ...[
             const SizedBox(width: 6),
-            const Padding(padding: EdgeInsets.only(top: 14), child: Icon(Icons.chevron_right_rounded, color: Color(0xFF5E5275))),
+            const Padding(padding: EdgeInsets.only(top: 14), child: Icon(Icons.chevron_right_rounded, color: Color(0xFFB3B9B1))),
           ],
         ]),
       ),
@@ -498,12 +498,12 @@ class _ReceiptRow extends StatelessWidget {
     };
     final photos = (req?['photos'] as List?) ?? const [];
     final leading = toNetJob
-        ? IconBubble(icon: kind == 'PROMOTION' ? Icons.campaign_rounded : Icons.workspace_premium_rounded, color: const Color(0xFF6B5BFF), size: 52)
+        ? IconBubble(icon: kind == 'PROMOTION' ? Icons.campaign_rounded : Icons.workspace_premium_rounded, color: const Color(0xFF3D7A5C), size: 52)
         : other?['avatarUrl'] != null
             ? UserAvatar(url: other!['avatarUrl'], name: other['name'] ?? '', radius: 26)
             : IconBubble(
                 icon: categoryIcon(req?['service']?['category']?['icon']),
-                color: kind == 'DIAGNOSTIC' ? const Color(0xFF4FA8E8) : NetJobColors.primary,
+                color: kind == 'DIAGNOSTIC' ? const Color(0xFF3F7CAC) : NetJobColors.primary,
                 size: 52,
               );
 
@@ -519,7 +519,7 @@ class _ReceiptRow extends StatelessWidget {
                   style: TextStyle(fontSize: featured ? 19 : 16.5, fontWeight: FontWeight.w700, color: NetJobColors.ink)),
               const SizedBox(height: 3),
               Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: featured ? 15.5 : 14.5, color: const Color(0xFFDDD3EE))),
+                  style: TextStyle(fontSize: featured ? 15.5 : 14.5, color: const Color(0xFF3C4A42))),
             ]),
           ),
           const SizedBox(width: 10),
@@ -544,7 +544,7 @@ class _ReceiptRow extends StatelessWidget {
                   fontSize: 13,
                   fontWeight: p['payoutStatus'] == 'HELD' ? FontWeight.w700 : null,
                   color: status != 'APPROVED'
-                      ? const Color(0xFFFFB86B)
+                      ? const Color(0xFFC77A12)
                       : p['payoutStatus'] == 'HELD'
                           ? NetJobColors.primary
                           : NetJobColors.muted,
@@ -584,7 +584,7 @@ class _ReceiptRow extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: NetJobColors.primary, width: 3.5),
-          boxShadow: const [BoxShadow(color: Color(0x26C98BFF), blurRadius: 20, offset: Offset(0, 8))],
+          boxShadow: const [BoxShadow(color: Color(0x141B4332), blurRadius: 20, offset: Offset(0, 8))],
           color: NetJobColors.card,
         ),
         child: Material(color: Colors.transparent, child: InkWell(borderRadius: BorderRadius.circular(20), onTap: onTap, child: content)),
@@ -593,7 +593,7 @@ class _ReceiptRow extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xFF241834)))),
+        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xFFE6E9DE)))),
         child: content,
       ),
     );

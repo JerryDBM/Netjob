@@ -1,68 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Identidad visual (paleta tomada de drift.iscoutb.dev): fondo violeta casi negro,
-/// paneles de vidrio translúcidos, lavanda como color principal, acentos menta, rosa y
-/// celeste, y degradados profundos morado → azul → magenta.
+/// Identidad visual: fondo crema cálido, verde bosque como color principal, acento
+/// naranja para las llamadas a la acción y lima suave para destacar sobre el verde.
 class NetJobColors {
   // Fondos
-  static const bg = Color(0xFF0D0716);
-  static const bgSoft = Color(0xFF140A21); // barras y hojas inferiores
-  static const card = Color(0xFF1B1029); // paneles
-  static const cardHigh = Color(0xFF261A3A); // paneles elevados / campos
-  static const border = Color(0x21FFFFFF); // borde de vidrio (13 %)
+  static const bg = Color(0xFFF4F1E6); // crema
+  static const bgSoft = Color(0xFFF8F6EE); // barras y hojas inferiores
+  static const card = Color(0xFFFCFBF6); // paneles
+  static const cardHigh = Color(0xFFE8ECE1); // paneles elevados / campos (verde salvia muy claro)
+  static const border = Color(0x241B4332); // borde fino verdoso
 
   // Texto
-  static const ink = Color(0xFFF6F2FC); // principal
-  static const textSoft = Color(0xFFDDD3EE);
-  static const subtle = Color(0xFFB9AECD);
-  static const muted = Color(0xFF8A7FA3);
+  static const ink = Color(0xFF1A2E24); // principal (casi negro verdoso)
+  static const textSoft = Color(0xFF3C4A42);
+  static const subtle = Color(0xFF5E6A63);
+  static const muted = Color(0xFF878E87);
 
   // Marca
-  static const primary = Color(0xFFC98BFF); // lavanda
-  static const primaryDeep = Color(0xFF8D6BFF);
-  static const primaryLight = Color(0xFFE3C4FF);
-  static const onPrimary = Color(0xFF1A0B2B); // texto sobre lavanda
-  static const mint = Color(0xFF6DFFB4);
-  static const pink = Color(0xFFFF8FD0);
-  static const sky = Color(0xFF7CC7FF);
+  static const primary = Color(0xFF1B4332); // verde bosque
+  static const primaryDeep = Color(0xFF12301F);
+  static const primaryLight = Color(0xFF3D7A5C);
+  static const onPrimary = Color(0xFFF8F6EE); // texto sobre verde
+  static const mint = Color(0xFF2E8B57); // verde éxito
+  static const pink = Color(0xFFE4602B); // naranja de acción
+  static const orange = pink;
+  static const lime = Color(0xFFD3E27F); // lima suave (sobre verde oscuro)
+  static const sky = Color(0xFF3F7CAC);
+  static const onDarkSoft = Color(0xFFC9DCCF); // texto secundario sobre verde oscuro
 
   // Estados
   static const accent = mint; // éxito / pagado
-  static const warning = Color(0xFFFFB86B);
-  static const danger = Color(0xFFFF7A9C);
-  static const star = Color(0xFFFFC86B);
+  static const warning = Color(0xFFC77A12);
+  static const danger = Color(0xFFC8452F);
+  static const star = Color(0xFFE0A21B);
 
   // Compatibilidad con nombres anteriores
   static const surface = bg;
   static const surfaceDeep = bgSoft;
   static const highlight = primary;
-  static const bubble = Color(0xFF3B2560);
-  static const night = bg;
-  static const nightCard = card;
-  static const slate = Color(0xFF2A1846); // banner de navegación
+  static const bubble = Color(0xFFCFE6D8); // menta pálida
+  static const night = Color(0xFF1B4332); // superficies oscuras (verde bosque)
+  static const nightCard = Color(0xFF225240);
+  static const slate = Color(0xFF1B4332); // banner de navegación
 
   // Sobre el mapa (claro): trazos y texto con contraste suficiente
-  static const mapBg = Color(0xFFF4F1FA);
-  static const mapLine = Color(0xFF6B3FD4); // rutas, radio de búsqueda, "tú estás aquí"
-  static const mapInk = Color(0xFF3B2560);
+  static const mapBg = Color(0xFFF4F1E6);
+  static const mapLine = Color(0xFFE4602B); // rutas, radio de búsqueda, "tú estás aquí"
+  static const mapInk = Color(0xFF1B4332);
 
-  /// Botones y selección: lila claro → lavanda → violeta.
+  /// Botones y selección: verde bosque.
   static const gradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [primaryLight, primary, primaryDeep],
+    colors: [Color(0xFF24563F), primary, primaryDeep],
   );
 
-  /// Fondos destacados: morado profundo → azul noche → magenta.
+  /// Fondos destacados: verde bosque profundo.
   static const heroGradient = LinearGradient(
     begin: Alignment(-1, -0.6),
     end: Alignment(1, 0.6),
-    colors: [Color(0xFF45186A), Color(0xFF1D2A7C), Color(0xFF6A1D5C)],
+    colors: [Color(0xFF225240), Color(0xFF1B4332), Color(0xFF143425)],
   );
 
-  /// Detalles: rosa → lavanda → celeste.
-  static const rainbow = LinearGradient(colors: [pink, primary, sky]);
+  /// Detalles: naranja → lima → verde.
+  static const rainbow = LinearGradient(colors: [pink, lime, mint]);
 }
 
 /// Tipografías: Exo 2 para títulos y DM Sans para textos.
@@ -102,16 +104,16 @@ class NetJobPageTransitions extends PageTransitionsBuilder {
 ThemeData buildTheme() {
   final scheme = ColorScheme.fromSeed(
     seedColor: NetJobColors.primary,
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     primary: NetJobColors.primary,
     onPrimary: NetJobColors.onPrimary,
-    secondary: NetJobColors.mint,
-    onSecondary: NetJobColors.onPrimary,
+    secondary: NetJobColors.orange,
+    onSecondary: Colors.white,
     surface: NetJobColors.card,
     onSurface: NetJobColors.ink,
     error: NetJobColors.danger,
   );
-  final base = ThemeData(colorScheme: scheme, useMaterial3: true, brightness: Brightness.dark);
+  final base = ThemeData(colorScheme: scheme, useMaterial3: true, brightness: Brightness.light);
   final body = GoogleFonts.dmSansTextTheme(base.textTheme).apply(bodyColor: NetJobColors.ink, displayColor: NetJobColors.ink);
   TextStyle? display(TextStyle? s, FontWeight w, double ls) => GoogleFonts.exo2(textStyle: s, fontWeight: w, letterSpacing: ls);
   final radius = BorderRadius.circular(16);
@@ -193,7 +195,7 @@ ThemeData buildTheme() {
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(0, 52),
         shape: const StadiumBorder(),
-        side: const BorderSide(color: Color(0x40C98BFF)),
+        side: const BorderSide(color: Color(0x591B4332)),
         foregroundColor: NetJobColors.primary,
         textStyle: GoogleFonts.dmSans(fontWeight: FontWeight.w700),
       ),
@@ -201,11 +203,12 @@ ThemeData buildTheme() {
     textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: NetJobColors.primary)),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: NetJobColors.bgSoft,
+      surfaceTintColor: Colors.transparent,
       elevation: 0,
       height: 70,
-      indicatorColor: const Color(0x33C98BFF),
+      indicatorColor: NetJobColors.primary,
       iconTheme: WidgetStateProperty.resolveWith(
-        (s) => IconThemeData(color: s.contains(WidgetState.selected) ? NetJobColors.primary : NetJobColors.muted),
+        (s) => IconThemeData(color: s.contains(WidgetState.selected) ? NetJobColors.onPrimary : NetJobColors.muted),
       ),
       labelTextStyle: WidgetStateProperty.resolveWith(
         (s) => GoogleFonts.dmSans(
@@ -229,6 +232,7 @@ ThemeData buildTheme() {
     progressIndicatorTheme: const ProgressIndicatorThemeData(color: NetJobColors.primary, linearTrackColor: NetJobColors.cardHigh),
     dialogTheme: DialogThemeData(
       backgroundColor: NetJobColors.card,
+      surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28), side: const BorderSide(color: NetJobColors.border)),
     ),
     bottomSheetTheme: const BottomSheetThemeData(
@@ -236,7 +240,7 @@ ThemeData buildTheme() {
       dragHandleColor: NetJobColors.muted,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
     ),
-    snackBarTheme: const SnackBarThemeData(contentTextStyle: TextStyle(color: NetJobColors.onPrimary, fontWeight: FontWeight.w600)),
+    snackBarTheme: const SnackBarThemeData(backgroundColor: NetJobColors.primary, contentTextStyle: TextStyle(color: NetJobColors.onPrimary, fontWeight: FontWeight.w600)),
     datePickerTheme: const DatePickerThemeData(backgroundColor: NetJobColors.card),
     timePickerTheme: const TimePickerThemeData(backgroundColor: NetJobColors.card),
     popupMenuTheme: const PopupMenuThemeData(color: NetJobColors.cardHigh),

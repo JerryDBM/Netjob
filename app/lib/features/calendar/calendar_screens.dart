@@ -558,10 +558,10 @@ class _NextUp extends StatelessWidget {
           child: Row(children: [
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Próxima cita · $soon', style: const TextStyle(color: NetJobColors.primaryLight, fontWeight: FontWeight.w700, fontSize: 12.5)),
+                Text('Próxima cita · $soon', style: const TextStyle(color: NetJobColors.lime, fontWeight: FontWeight.w700, fontSize: 12.5)),
                 const SizedBox(height: 4),
                 Text(a['service']['title'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 17)),
-                Text('${apptWhen(a['scheduledAt'])} · ${a['counterpart']['name']}', style: const TextStyle(color: NetJobColors.textSoft, fontSize: 12.5)),
+                Text('${apptWhen(a['scheduledAt'])} · ${a['counterpart']['name']}', style: const TextStyle(color: NetJobColors.onDarkSoft, fontSize: 12.5)),
               ]),
             ),
             const Icon(Icons.chevron_right_rounded, color: Colors.white),

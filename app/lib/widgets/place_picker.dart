@@ -59,7 +59,7 @@ class _SearchPickerState extends State<_SearchPicker> {
                 hintText: 'Buscar…',
                 prefixIcon: Icon(Icons.search),
                 filled: true,
-                fillColor: Color(0xFF241834),
+                fillColor: Color(0xFFE6E9DE),
               ),
             ),
           ),
@@ -117,7 +117,7 @@ class DepartmentCityPicker extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 19),
                   child: Row(children: [
-                    Icon(icon, color: const Color(0xFF8A7FA3)),
+                    Icon(icon, color: const Color(0xFF878E87)),
                     const SizedBox(width: 12),
                     Expanded(
                       child: AnimatedSwitcher(
@@ -129,13 +129,13 @@ class DepartmentCityPicker extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 16,
-                            color: value == null ? (onTap == null ? const Color(0xFF5E5275) : const Color(0xFF8A7FA3)) : NetJobColors.ink,
+                            color: value == null ? (onTap == null ? const Color(0xFFB3B9B1) : const Color(0xFF878E87)) : NetJobColors.ink,
                             fontWeight: value == null ? FontWeight.w400 : FontWeight.w600,
                           ),
                         ),
                       ),
                     ),
-                    Icon(Icons.expand_more_rounded, color: onTap == null ? const Color(0xFF5E5275) : const Color(0xFF8A7FA3)),
+                    Icon(Icons.expand_more_rounded, color: onTap == null ? const Color(0xFFB3B9B1) : const Color(0xFF878E87)),
                   ]),
                 ),
               ),
@@ -143,7 +143,7 @@ class DepartmentCityPicker extends StatelessWidget {
             if (error != null)
               Padding(
                 padding: const EdgeInsets.only(left: 14, top: 6),
-                child: Text(error, style: const TextStyle(color: Color(0xFFFF7A9C), fontSize: 12)),
+                child: Text(error, style: const TextStyle(color: Color(0xFFC8452F), fontSize: 12)),
               ),
           ],
         );

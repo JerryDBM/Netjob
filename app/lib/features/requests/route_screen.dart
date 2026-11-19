@@ -395,11 +395,11 @@ class _RouteScreenState extends State<RouteScreen> {
             if (_sharing && !_arrived)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(color: const Color(0x336DFFB4), borderRadius: BorderRadius.circular(20)),
+                decoration: BoxDecoration(color: const Color(0x33D3E27F), borderRadius: BorderRadius.circular(20)),
                 child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                  Icon(Icons.sensors_rounded, size: 15, color: NetJobColors.mint),
+                  Icon(Icons.sensors_rounded, size: 15, color: NetJobColors.lime),
                   SizedBox(width: 5),
-                  Text('El cliente ve tu ubicación', style: TextStyle(color: NetJobColors.mint, fontSize: 12.5, fontWeight: FontWeight.w700)),
+                  Text('El cliente ve tu ubicación', style: TextStyle(color: NetJobColors.lime, fontSize: 12.5, fontWeight: FontWeight.w700)),
                 ]),
               ),
             if (_routing) ...[
@@ -410,7 +410,7 @@ class _RouteScreenState extends State<RouteScreen> {
           if (_arrived) ...[
             Text('Llegaste', style: TextStyle(fontFamily: NetJobFonts.display, color: Colors.white, fontSize: 32, fontWeight: FontWeight.w800)),
             const SizedBox(height: 4),
-            Text(r['address'], style: const TextStyle(color: NetJobColors.textSoft, fontSize: 18)),
+            Text(r['address'], style: const TextStyle(color: NetJobColors.onDarkSoft, fontSize: 18)),
           ] else if (step != null) ...[
             Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
               Icon(_maneuverIcon(step['type'], step['modifier']), color: Colors.white, size: 54),
@@ -425,7 +425,7 @@ class _RouteScreenState extends State<RouteScreen> {
             ]),
             if (_step + 1 < _steps.length) ...[
               const SizedBox(height: 10),
-              Text('Luego: ${_steps[_step + 1]['text']}', style: const TextStyle(color: NetJobColors.subtle, fontSize: 14)),
+              Text('Luego: ${_steps[_step + 1]['text']}', style: const TextStyle(color: NetJobColors.onDarkSoft, fontSize: 14)),
             ],
           ] else ...[
             Text(_fmtDistance(_remainingMeters),
@@ -434,8 +434,8 @@ class _RouteScreenState extends State<RouteScreen> {
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
                 padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(color: NetJobColors.mint, borderRadius: BorderRadius.circular(10)),
-                child: const Icon(Icons.home_rounded, color: NetJobColors.onPrimary, size: 22),
+                decoration: BoxDecoration(color: NetJobColors.orange, borderRadius: BorderRadius.circular(10)),
+                child: const Icon(Icons.home_rounded, color: Colors.white, size: 22),
               ),
               const SizedBox(width: 10),
               Expanded(child: Text(r['address'], style: const TextStyle(color: NetJobColors.textSoft, fontSize: 20, fontWeight: FontWeight.w600, height: 1.2))),
@@ -509,14 +509,14 @@ class _RouteScreenState extends State<RouteScreen> {
           padding: EdgeInsets.only(top: 6),
           child: Text('Al tocar "Voy en camino" avisamos al cliente y verá tu ubicación hasta que llegues.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: NetJobColors.ink, backgroundColor: Color(0xCC0D0716))),
+              style: TextStyle(fontSize: 12, color: NetJobColors.ink, backgroundColor: Color(0xCCFCFBF6))),
         ),
       if (!_live)
         const Padding(
           padding: EdgeInsets.only(top: 6),
           child: Text('Sin GPS: la ruta parte del centro de tu zona. Activa la ubicación para guiarte en tiempo real.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: NetJobColors.ink, backgroundColor: Color(0xCC0D0716))),
+              style: TextStyle(fontSize: 12, color: NetJobColors.ink, backgroundColor: Color(0xCCFCFBF6))),
         ),
     ]);
   }
@@ -548,7 +548,7 @@ class _RouteScreenState extends State<RouteScreen> {
       return Container(
         color: NetJobColors.mapBg,
         alignment: Alignment.center,
-        child: const Icon(Icons.map_outlined, size: 120, color: Color(0xFFC9BDE0)),
+        child: const Icon(Icons.map_outlined, size: 120, color: Color(0xFFB9C9BD)),
       );
     }
     return FutureBuilder<(bool, BitmapDescriptor?)>(

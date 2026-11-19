@@ -51,7 +51,7 @@ class _AuthScaffold extends StatelessWidget {
                 left: 8,
                 top: 8,
                 child: IconButton(
-                  style: IconButton.styleFrom(backgroundColor: const Color(0x94180E26), side: const BorderSide(color: NetJobColors.border)),
+                  style: IconButton.styleFrom(backgroundColor: const Color(0xD9FCFBF6), side: const BorderSide(color: NetJobColors.border)),
                   icon: const Icon(Icons.arrow_back_rounded, color: NetJobColors.ink),
                   onPressed: () => context.canPop() ? context.pop() : context.go('/login'),
                 ),
@@ -168,8 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   gradient: _remember ? NetJobColors.gradient : null,
-                  color: _remember ? null : const Color(0x94180E26),
-                  border: Border.all(color: _remember ? Colors.transparent : const Color(0x55C98BFF), width: 1.5),
+                  color: _remember ? null : const Color(0xD9FCFBF6),
+                  border: Border.all(color: _remember ? Colors.transparent : const Color(0x591B4332), width: 1.5),
                 ),
                 child: _remember ? const Icon(Icons.check_rounded, color: NetJobColors.onPrimary, size: 18) : null,
               ),
@@ -250,10 +250,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(22),
             gradient: selected ? NetJobColors.gradient : null,
-            color: selected ? null : const Color(0x94180E26),
+            color: selected ? null : const Color(0xD9FCFBF6),
             border: Border.all(color: selected ? Colors.transparent : NetJobColors.border, width: 1.2),
             boxShadow: [
-              BoxShadow(color: selected ? const Color(0x66C98BFF) : const Color(0x40000000), blurRadius: selected ? 24 : 16, offset: const Offset(0, 8)),
+              BoxShadow(color: selected ? const Color(0x331B4332) : const Color(0x14000000), blurRadius: selected ? 24 : 16, offset: const Offset(0, 8)),
             ],
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -261,7 +261,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 10),
             Text(title, style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15, color: selected ? NetJobColors.onPrimary : NetJobColors.ink)),
             const SizedBox(height: 3),
-            Text(desc, style: TextStyle(fontSize: 12.5, color: selected ? const Color(0xB31A0B2B) : NetJobColors.subtle)),
+            Text(desc, style: TextStyle(fontSize: 12.5, color: selected ? const Color(0xB3F8F6EE) : NetJobColors.subtle)),
           ]),
         ),
       ),
