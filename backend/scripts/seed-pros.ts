@@ -16,6 +16,7 @@ import type { PriceUnit } from '@prisma/client';
 import { prisma } from '../src/db.js';
 import { storeBuffer, cloudStorage, ensureBuckets } from '../src/lib/upload.js';
 import { BARRIOS, CARTAGENA, placeFor } from './cartagena.js';
+import { CARMEN, CARMEN_BARRIOS, carmenPlaceFor } from './carmen.js';
 
 const PHOTOS = path.resolve('prisma/demo-photos');
 if (!fs.existsSync(PHOTOS)) {
@@ -433,6 +434,49 @@ const PEOPLE: P[] = [
   { name: 'Duvan Mercado Sierra', g: 'm', city: 'sinc', trades: ['cerrajeria'], years: 6, plan: 'BASIC' },
 ];
 
+// El Carmen de Bolívar (npm run demo:pros -- carmen): 30 profesionales más
+type PC = Omit<P, 'city'>;
+const PEOPLE_CARMEN: PC[] = [
+  { name: 'Álvaro José Pérez Tovar', g: 'm', trades: ['plomeria'], years: 16, plan: 'PREMIUM' },
+  { name: 'Diana Marcela Rojas', g: 'f', trades: ['otros'], years: 7, plan: 'BASIC' },
+  { name: 'Luis Eduardo Arrieta', g: 'm', trades: ['electricidad', 'instalaciones'], years: 12, plan: 'INTERMEDIATE' },
+  { name: 'Yair Antonio Meza', g: 'm', trades: ['carpinteria'], years: 21, plan: 'INTERMEDIATE' },
+  { name: 'Roxana Isabel Díaz', g: 'f', trades: ['pintura'], years: 6, plan: 'BASIC' },
+  { name: 'Wilfrido Herrera Caro', g: 'm', trades: ['reparaciones', 'plomeria'], years: 19, plan: 'PREMIUM' },
+  { name: 'Jhonatan Vides Salas', g: 'm', trades: ['servicios-tecnicos'], years: 8, plan: 'INTERMEDIATE' },
+  { name: 'Ana Milena Ochoa', g: 'f', trades: ['otros'], years: 10, plan: 'BASIC' },
+  { name: 'Ramiro Fuentes Ballestas', g: 'm', trades: ['cerrajeria'], years: 14, plan: 'BASIC' },
+  { name: 'Erick David Romero', g: 'm', trades: ['instalaciones'], years: 5, plan: 'BASIC' },
+  { name: 'Leidy Johana Torres', g: 'f', trades: ['servicios-tecnicos'], years: 9, plan: 'INTERMEDIATE' },
+  { name: 'Ismael Paternina Ruiz', g: 'm', trades: ['electricidad'], years: 23, plan: 'PREMIUM' },
+  { name: 'Darwin Chamorro Mejía', g: 'm', trades: ['reparaciones'], years: 11, plan: 'INTERMEDIATE' },
+  { name: 'Keila Mercado Castro', g: 'f', trades: ['pintura', 'reparaciones'], years: 8, plan: 'INTERMEDIATE' },
+  { name: 'Hernán Viloria Gómez', g: 'm', trades: ['carpinteria'], years: 30, plan: 'BASIC' },
+  { name: 'Osvaldo Narváez Lora', g: 'm', trades: ['plomeria', 'instalaciones'], years: 9, plan: 'INTERMEDIATE' },
+  { name: 'Yesica Paola Ariza', g: 'f', trades: ['otros'], years: 4, plan: 'BASIC' },
+  { name: 'Edgardo Benítez Sierra', g: 'm', trades: ['servicios-tecnicos', 'electricidad'], years: 15, plan: 'PREMIUM' },
+  { name: 'Carlos Mario Ospino', g: 'm', trades: ['cerrajeria'], years: 7, plan: 'BASIC' },
+  { name: 'Marta Lucía Pérez', g: 'f', trades: ['reparaciones'], years: 12, plan: 'BASIC' },
+  { name: 'Jorge Iván Tovar', g: 'm', trades: ['electricidad'], years: 6, plan: 'BASIC' },
+  { name: 'Nelly Contreras Julio', g: 'f', trades: ['pintura'], years: 11, plan: 'INTERMEDIATE' },
+  { name: 'Robert Acuña Montes', g: 'm', trades: ['instalaciones', 'servicios-tecnicos'], years: 10, plan: 'INTERMEDIATE' },
+  { name: 'Fabio Salgado Villa', g: 'm', trades: ['carpinteria', 'reparaciones'], years: 17, plan: 'PREMIUM' },
+  { name: 'Liliana Mendoza Arrieta', g: 'f', trades: ['otros'], years: 6, plan: 'INTERMEDIATE' },
+  { name: 'Manuel Ricardo Díaz', g: 'm', trades: ['plomeria'], years: 13, plan: 'BASIC' },
+  { name: 'Wendy Patricia Rivera', g: 'f', trades: ['servicios-tecnicos'], years: 5, plan: 'BASIC' },
+  { name: 'Ángel Custodio Barrios', g: 'm', trades: ['cerrajeria', 'instalaciones'], years: 20, plan: 'INTERMEDIATE' },
+  { name: 'Tomás Elías Martínez', g: 'm', trades: ['pintura'], years: 9, plan: 'BASIC' },
+  { name: 'Sindy Lorena Puello', g: 'f', trades: ['electricidad'], years: 7, plan: 'INTERMEDIATE' },
+];
+
+const IN_CARMEN = process.argv.includes('carmen');
+const TOWN = IN_CARMEN ? { ...CARMEN, areas: CARMEN_BARRIOS.map((b) => b[0]) } : { ...CARTAGENA, areas: BARRIOS.map((b) => b[0]) };
+const townPlace = IN_CARMEN ? carmenPlaceFor : placeFor;
+const LIST: PC[] = IN_CARMEN ? PEOPLE_CARMEN : PEOPLE;
+const PREFIX = IN_CARMEN ? 'demo-carmen-pro' : 'demo-pro';
+/** Desplaza las combinaciones de textos y fotos para que no se repitan con las de Cartagena. */
+const OFFSET = IN_CARMEN ? 23 : 0;
+
 const FEES = [0, 10_000, 15_000, 20_000, 25_000, 30_000, 35_000, 12_000, 18_000, 8_000];
 const RATINGS = [4.9, 4.7, 4.8, 4.5, 4.6, 5.0, 4.4, 4.8, 4.3, 4.9, 4.6, 4.7];
 const SCHEDULES: [number[], string, string, string?][] = [
@@ -508,21 +552,23 @@ for (const [i, name] of CLIENTS.entries()) {
   );
 }
 
-const usedAvatars = { m: 0, f: 0 };
+// Retratos: los de Cartagena usan los primeros; los de El Carmen, del 41 en adelante
+const usedAvatars = IN_CARMEN ? { m: 40, f: 40 } : { m: 0, f: 0 };
 const now = new Date();
 let created = 0;
 
-for (const [i, p] of PEOPLE.entries()) {
-  const n = String(i + 1).padStart(2, '0');
-  const email = `demo-pro-${n}@netjob.co`;
+for (const [idx, p] of LIST.entries()) {
+  const i = idx + OFFSET;
+  const n = String(idx + 1).padStart(2, '0');
+  const email = `${PREFIX}-${n}@netjob.co`;
   const avatarIdx = ++usedAvatars[p.g];
   if (await prisma.user.findUnique({ where: { email } })) {
     console.log(`Ya existe ${email}`);
     continue;
   }
-  // Todos los profesionales de prueba atienden en Cartagena (repartidos por barrios)
-  const place = placeFor(i);
-  const city = { ...CARTAGENA, areas: BARRIOS.map((b) => b[0]) };
+  // Repartidos por los barrios del municipio elegido
+  const place = townPlace(idx);
+  const city = TOWN;
   const main = T[p.trades[0]];
   const second = p.trades[1] ? T[p.trades[1]] : null;
   const first = p.name.split(' ')[0];
@@ -551,7 +597,7 @@ for (const [i, p] of PEOPLE.entries()) {
   const fee = pick(FEES, i);
 
   const avatarFile = `avatars/${p.g === 'm' ? 'men' : 'women'}-${avatarIdx}.jpg`;
-  const avatarUrl = fs.existsSync(path.join(PHOTOS, avatarFile)) ? await upload(avatarFile, `demo-avatar-${n}.jpg`) : null;
+  const avatarUrl = fs.existsSync(path.join(PHOTOS, avatarFile)) ? await upload(avatarFile, `${IN_CARMEN ? 'demo-carmen-avatar' : 'demo-avatar'}-${n}.jpg`) : null;
 
   // Portafolio: fotos del oficio principal (y una del segundo si lo hay), sin repetir entre vecinos
   const mainPhotos = photosOf(p.trades[0]);
@@ -673,5 +719,5 @@ for (const [i, p] of PEOPLE.entries()) {
   console.log(`${n}. ${p.name} · ${city.name} · ${p.trades.join(' + ')} · ${p.plan} · visita ${fee ? `$${fee.toLocaleString('es-CO')}` : 'gratis'} · ${portfolio.length} fotos · ${nReviews} reseñas`);
 }
 
-console.log(`\n${created} profesionales creados (correo demo-pro-NN@netjob.co, contraseña NetJob2026!)`);
+console.log(`\n${created} profesionales creados en ${TOWN.name} (correo ${PREFIX}-NN@netjob.co, contraseña NetJob2026!)`);
 await prisma.$disconnect();

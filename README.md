@@ -194,6 +194,7 @@ Los puntos de la sección 9 del documento siguen abiertos; implementé valores p
 cd backend
 npm run demo:photos   # descarga las fotos (una vez; quedan en prisma/demo-photos, fuera de git)
 npm run demo:pros     # crea los 50 profesionales (no duplica si se ejecuta de nuevo)
+npm run demo:pros -- carmen  # 30 profesionales más en El Carmen de Bolívar (demo-carmen-pro-01 … 30@netjob.co)
 npm run demo:clients  # 20 clientes en Cartagena: demo-cliente-1 … demo-cliente-20@netjob.co (NetJob2026!)
 npm run demo:cartagena  # pasa a Cartagena todos los profesionales que ya existan
 ```
