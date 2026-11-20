@@ -21,7 +21,9 @@
     "supabase:push": "dotenv -e .env.supabase -o -- prisma db push",
     "supabase:seed": "dotenv -e .env.supabase -o -- tsx prisma/seed.ts && dotenv -e .env.supabase -o -- tsx scripts/seed-pros.ts",
     "demo:cartagena": "tsx scripts/move-to-cartagena.ts",
-    "demo:clients": "tsx scripts/seed-clients.ts"
+    "demo:clients": "tsx scripts/seed-clients.ts",
+    "demo:sherry-teto": "tsx scripts/seed-sherry-teto.ts",
+    "supabase:sherry-teto": "dotenv -e .env.supabase -o -- tsx scripts/seed-sherry-teto.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
